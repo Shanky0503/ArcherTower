@@ -13,7 +13,7 @@ public class Shoot : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        projectileVelocity = 3;
+        projectileVelocity = 12;
 	}
 	
 	// Update is called once per frame
