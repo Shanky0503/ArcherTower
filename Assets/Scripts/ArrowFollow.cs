@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class ArrowFollow : MonoBehaviour {
     Rigidbody2D rb;
-	private bool _rotate;
 	// Use this for initialization
+	public Vector3 vel; 
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
-		Debug.Log (rb.name);
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 vel = rb.velocity;
-		if(_rotate)
-			transform.rotation = Quaternion.LookRotation(vel);
+		vel = rb.velocity;
+		this.transform.rotation = Quaternion.LookRotation(vel);
+		//Debug.Log (transform.rotation);
+
+		this.transform.Rotate ( 
+			Vector3.Slerp(this.transform.right, rb.velocity.normalized, Time.deltaTime));
 	}
+
+//	void FixedUpdate(){
+//		if(rb.velocity != Vector3.zero)
+//			rb.rotation = Quaternion.LookRotation(rb.velocity);  
+//	}
 }

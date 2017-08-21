@@ -9,6 +9,7 @@ public class Shoot : MonoBehaviour {
     private List<GameObject> Projectiles = new List<GameObject>();
 
     private float projectileVelocity;
+	public float angle;
 
 	// Use this for initialization
 	void Start ()
@@ -50,7 +51,7 @@ public class Shoot : MonoBehaviour {
         }
     }
 
-    Quaternion aimAtMousePointer()
+    public Quaternion aimAtMousePointer()
     {
         //Aims or rotates the bow towards the mouse pointer
         Vector3 mouse_pos = Input.mousePosition;
@@ -59,7 +60,8 @@ public class Shoot : MonoBehaviour {
         mouse_pos.x = mouse_pos.x - player_pos.x;
         mouse_pos.y = mouse_pos.y - player_pos.y;
 
-        float angle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
+        angle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
+//		Debug.Log ("angle of mouse movement"+angle);
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Clamp(angle, -90, 90)));
 
         return this.transform.rotation;
