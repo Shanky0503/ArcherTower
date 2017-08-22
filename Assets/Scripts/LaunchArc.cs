@@ -11,9 +11,9 @@ public class LaunchArc : MonoBehaviour
 	public GameObject bow; 
 	public float velocity;
 	public float angle;
-	public int resolution = 10;
+	public int resolution = 20;
 	float h;
-	Vector3 offset = new Vector3(3,6,0);
+	Vector3 offset = new Vector3(3,0,0);
 
 	float g; // force of gravity on the y axis
 	float radianAngle;
@@ -21,8 +21,6 @@ public class LaunchArc : MonoBehaviour
 	void Awake () 
 	{
 		shootScript = GameObject.Find("bow").GetComponent<Shoot>();
-		angle = shootScript.angle;
-		Debug.Log ("Angle recived in launchArc is "+angle);
 		lr = GetComponent<LineRenderer> ();
 		g = Mathf.Abs (Physics2D.gravity.y);
 		h = bow.transform.position.y;
@@ -38,7 +36,7 @@ public class LaunchArc : MonoBehaviour
 
 	void Start ()
 	{
-		angle = shootScript.angle;
+		angle = shootScript.mouseAngle;
 		renderArc ();
 
 	}
@@ -50,37 +48,41 @@ public class LaunchArc : MonoBehaviour
 		lr.SetPositions (calculateArcArray());
 	}
 
-	void update()
+	void Update()
 	{
-		
+		angle = shootScript.mouseAngle;
+		//Debug.Log ("Angle recived in launchArc is "+ angle);
+		if (lr != null && Application.isPlaying ) {
+			if (angle >= -30 && angle <= 30) 
+			{
+				renderArc ();
+			}
+		}
 	}
 
 	//Create an array of vector3 positions for arc
-
-
 	Vector3[] calculateArcArray()
 	{
 		Vector3[] arcArray = new Vector3[resolution+1];
 		radianAngle = Mathf.Deg2Rad * angle;
-
 		//float maxDistance = (velocity * velocity * Mathf.Sin (2 * radianAngle)) / g;
 		float maxDistance = ((velocity * Mathf.Cos (radianAngle))/g)*(velocity*Mathf.Sin (radianAngle)+Mathf.Sqrt (velocity*Mathf.Sin (radianAngle)*velocity*Mathf.Sin (radianAngle)+2*g*h));
-//		Debug.Log (maxDistance);
+		//Debug.Log (maxDistance);
+		Vector3 endpoint = calculateArcArray ();
 
 		for (int i = 0; i <= resolution; i++) 
 		{
 			float t = (float)i / (float)resolution;
 			arcArray [i] = calculateArcPoint (t, maxDistance);
 		}
-
 		return arcArray;
 	}
 
-	//calculre heignt and distancene of each vertex
+	//calculate heignt and distancene of each vertex
 	Vector3 calculateArcPoint(float t, float maxDistance)
 	{
 		float x = t * maxDistance;
 		float y = h + x * Mathf.Tan (radianAngle) - ((g * x * x) / (2 * velocity * velocity * Mathf.Cos (radianAngle) * Mathf.Cos (radianAngle)));
-		return new Vector3 (x,y) + offset;
+		return new Vector3 (x,y)+ offset;
 	}
 }

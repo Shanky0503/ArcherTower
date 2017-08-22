@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-	//	[Tooltip("Position we want to hit")]
+//	[Tooltip("Position we want to hit")]
 	public Vector3 targetPos;
 
-	//	[Tooltip("Horizontal speed, in units/sec")]
+//	[Tooltip("Horizontal speed, in units/sec")]
 	public float speed = 10;
 
-	//	[Tooltip("How high the arc should be, in units")]
+//	[Tooltip("How high the arc should be, in units")]
 	public float arcHeight = 10;
 
 	Vector3 startPos;
