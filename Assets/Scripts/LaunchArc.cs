@@ -13,6 +13,8 @@ public class LaunchArc : MonoBehaviour
 	public float angle;
 	public int resolution = 20;
 	float h;
+	public Vector3 endPoint;
+	public Vector3 arcPoints;
 	Vector3 offset = new Vector3(3,0,0);
 
 	float g; // force of gravity on the y axis
@@ -38,7 +40,6 @@ public class LaunchArc : MonoBehaviour
 	{
 		angle = shootScript.mouseAngle;
 		renderArc ();
-
 	}
 
 	//populating the LineRender with appropriate settings
@@ -51,9 +52,8 @@ public class LaunchArc : MonoBehaviour
 	void Update()
 	{
 		angle = shootScript.mouseAngle;
-		//Debug.Log ("Angle recived in launchArc is "+ angle);
 		if (lr != null && Application.isPlaying ) {
-			if (angle >= -30 && angle <= 30) 
+			if (angle >= shootScript.clampAnglemin && angle <= shootScript.clampAnglemax) 
 			{
 				renderArc ();
 			}
@@ -61,20 +61,22 @@ public class LaunchArc : MonoBehaviour
 	}
 
 	//Create an array of vector3 positions for arc
-	Vector3[] calculateArcArray()
+	public Vector3[] calculateArcArray()
 	{
 		Vector3[] arcArray = new Vector3[resolution+1];
 		radianAngle = Mathf.Deg2Rad * angle;
-		//float maxDistance = (velocity * velocity * Mathf.Sin (2 * radianAngle)) / g;
 		float maxDistance = ((velocity * Mathf.Cos (radianAngle))/g)*(velocity*Mathf.Sin (radianAngle)+Mathf.Sqrt (velocity*Mathf.Sin (radianAngle)*velocity*Mathf.Sin (radianAngle)+2*g*h));
-		//Debug.Log (maxDistance);
-		Vector3 endpoint = calculateArcArray ();
-
 		for (int i = 0; i <= resolution; i++) 
 		{
 			float t = (float)i / (float)resolution;
 			arcArray [i] = calculateArcPoint (t, maxDistance);
+			if (arcArray[i].y <= 0) 
+			{
+				endPoint = arcArray [i];
+			}
+//			Debug.Log ("arcArray     :"+ arcArray[i].ToString ("F4"));
 		}
+
 		return arcArray;
 	}
 

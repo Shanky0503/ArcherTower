@@ -5,54 +5,22 @@ using System;
 
 public class Shoot : MonoBehaviour {
 
-    public GameObject projectilePrefab;
-    private List<GameObject> Projectiles = new List<GameObject>();
-
-    private float projectileVelocity;
+    public GameObject projectilePrefab;    
 	public float mouseAngle;
-	public float firedAngle;
-	 
-	// Use this for initialization
-	void Start ()
-    {
-        projectileVelocity = 15;
-	}
-	
+	public float clampAnglemin = -30;
+	public float clampAnglemax = 30;
+//	public Quaternion maxAngle = new Quaternion(30,-30,0,0);
+
+//	public Quaternion clampAngle = new Quaternion(30,-30,0,0);
+
 	// Update is called once per frame
 	void Update ()
     {
-        Quaternion mouseAngle = aimAtMousePointer();
-             
-
-        // on mouse press releases the arrow
-        if (Input.GetButtonDown("Fire1"))
-        {
-			Quaternion firedAngle = mouseAngle;
-            GameObject arrow = (GameObject)Instantiate(projectilePrefab, transform.position, mouseAngle);
-            Projectiles.Add(arrow);
-        }
-        for (int i = 0; i < Projectiles.Count; i++)
-        {
-            GameObject goArrow = Projectiles[i];
-            if (goArrow != null)
-            {
-                goArrow.transform.Translate(new Vector2(1,0) * Time.deltaTime * projectileVelocity);
-				//goArrow.GetComponent<Rigidbody2D>().AddForce(goArrow.transform.right * projectileVelocity);
-                destroyOnArrowOnBounds(goArrow);
-            }
-        }
-		
+		Quaternion angle = aimAtMousePointer();
+		if (Input.GetButtonDown ("Fire1") && angle.z >= clampAnglemin && angle.z <= clampAnglemax) {				
+			GameObject arrow = (GameObject)Instantiate (projectilePrefab, transform.position, angle);           	
+		} 
 	}
-
-    void destroyOnArrowOnBounds(GameObject goArrow)
-    {
-//        Vector3 bulletScreenPos = Camera.main.WorldToScreenPoint(goArrow.transform.position);
-//        if (bulletScreenPos.y >= Screen.height + 100 || bulletScreenPos.y <= 30)
-//        {
-//            DestroyObject(goArrow);
-//            Projectiles.Remove(goArrow);
-//        }
-    }
 
     public Quaternion aimAtMousePointer()
     {
@@ -64,9 +32,7 @@ public class Shoot : MonoBehaviour {
         mouse_pos.y = mouse_pos.y - player_pos.y;
 
         mouseAngle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
-//		Debug.Log ("angle of mouse movement"+angle);
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Clamp(mouseAngle, -30, 30)));
-
+		this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Clamp(mouseAngle, clampAnglemin, clampAnglemax)));
         return this.transform.rotation;
     }
 }
