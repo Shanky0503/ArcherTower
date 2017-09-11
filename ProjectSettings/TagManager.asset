@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - enemy
+  - player
+  - canvas
+  - tower
+  - head
+  - body
+  - arrow
   layers:
   - Default
   - TransparentFX

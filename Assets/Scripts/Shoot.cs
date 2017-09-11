@@ -6,23 +6,33 @@ using System;
 public class Shoot : MonoBehaviour {
 
     public GameObject projectilePrefab;    
-	public float mouseAngle;
-	public float clampAnglemin = -30;
-	public float clampAnglemax = 30;
-//	public Quaternion maxAngle = new Quaternion(30,-30,0,0);
+	private float mouseAngle;
+	private float timeBetweenArrows = 0.45f;
+	private float clampAngleMin = -55;
+	private float clampAngleMax = 15;
 
-//	public Quaternion clampAngle = new Quaternion(30,-30,0,0);
+	float timer;
 
 	// Update is called once per frame
 	void Update ()
     {
-		Quaternion angle = aimAtMousePointer();
-		if (Input.GetButtonDown ("Fire1") && angle.z >= clampAnglemin && angle.z <= clampAnglemax) {				
-			GameObject arrow = (GameObject)Instantiate (projectilePrefab, transform.position, angle);           	
-		} 
+		timer += Time.deltaTime;
+		aimAtMousePointer();		
+		if (Input.GetButtonDown ("Fire1") && timer >= timeBetweenArrows) 
+		{
+            Debug.Log("timer :" + timer + "is Greater than or equal to " + timeBetweenArrows);
+            GameObject arrow = (GameObject)Instantiate (projectilePrefab, transform.position, this.transform.rotation);
+            timer = 0f;
+        }
+	}	
+
+	public float getMouseAngle()
+	{
+		return mouseAngle;
 	}
 
-    public Quaternion aimAtMousePointer()
+
+	public void aimAtMousePointer()
     {
         //Aims or rotates the bow towards the mouse pointer
         Vector3 mouse_pos = Input.mousePosition;
@@ -32,7 +42,8 @@ public class Shoot : MonoBehaviour {
         mouse_pos.y = mouse_pos.y - player_pos.y;
 
         mouseAngle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
-		this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Clamp(mouseAngle, clampAnglemin, clampAnglemax)));
-        return this.transform.rotation;
+		mouseAngle = Mathf.Clamp (mouseAngle, clampAngleMin, clampAngleMax);
+		this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, mouseAngle));
+		       
     }
 }

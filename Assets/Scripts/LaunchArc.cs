@@ -38,8 +38,17 @@ public class LaunchArc : MonoBehaviour
 
 	void Start ()
 	{
-		angle = shootScript.mouseAngle;
+		angle = shootScript.getMouseAngle ();
 		renderArc ();
+	}
+
+	void Update()
+	{
+		angle = shootScript.getMouseAngle ();
+		if (lr != null && Application.isPlaying) 
+		{
+			renderArc ();					
+		}
 	}
 
 	//populating the LineRender with appropriate settings
@@ -49,16 +58,7 @@ public class LaunchArc : MonoBehaviour
 		lr.SetPositions (calculateArcArray());
 	}
 
-	void Update()
-	{
-		angle = shootScript.mouseAngle;
-		if (lr != null && Application.isPlaying ) {
-			if (angle >= shootScript.clampAnglemin && angle <= shootScript.clampAnglemax) 
-			{
-				renderArc ();
-			}
-		}
-	}
+
 
 	//Create an array of vector3 positions for arc
 	public Vector3[] calculateArcArray()
