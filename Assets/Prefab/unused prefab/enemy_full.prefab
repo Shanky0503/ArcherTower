@@ -209,8 +209,6 @@ MonoBehaviour:
   startingHealth: 100
   currentHealth: 0
   scoreValue: 10
-  healthBar: {fileID: 114174154250609146, guid: d767ef1cccfd21c49a19e686ef38384f,
-    type: 2}
 --- !u!114 &114304091841799560
 MonoBehaviour:
   m_ObjectHideFlags: 1

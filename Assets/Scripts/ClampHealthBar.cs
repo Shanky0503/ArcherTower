@@ -3,17 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ClampHealthBar : MonoBehaviour {
+public class ClampHealthBar : MonoBehaviour
+{
 
 
-	public Transform target;
+	//public GameObject[] target;
+    //public List<GameObject> targets = new List<GameObject>();
+    public GameObject target;
 
-	void Update ()
+
+    void FixedUpdate ()
 	{
-		var wantedPos = Camera.main.WorldToScreenPoint (target.position);
-		transform.position = wantedPos;
-	}
+        //if (targets != null)
+        //{
+        //    targets.AddRange(GameObject.FindGameObjectsWithTag("enemy"));
 
+        //    foreach (var target in targets)
+        //    {
+        //        var wantedPos = Camera.main.WorldToScreenPoint(target.transform.position);
+        //        transform.position = wantedPos;
+        //    }
+        //}
 
-
+        //var wantedPos = Camera.main.WorldToScreenPoint(target.position);
+        this.transform.position = target.transform.position;
+    }
 }

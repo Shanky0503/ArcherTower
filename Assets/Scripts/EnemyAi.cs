@@ -8,8 +8,10 @@ public class EnemyAi : MonoBehaviour {
 	Transform player;
 	int moveSpeed = 2;
 //	int maxDistance = 10;
-	int minDistance = 1;
+	int minDistance = 5;
 	SpawnEnemies spawnScript;
+    public int damage;
+  
 
 
 
@@ -32,7 +34,7 @@ public class EnemyAi : MonoBehaviour {
 		if (coll.gameObject.tag == "tower") 
 		{
 //			Debug.Log ("Touched Tower :D");
-			coll.gameObject.SendMessage ("towerDamage",50);
+			coll.gameObject.SendMessage ("towerDamage",damage);
 		}
 
 	}

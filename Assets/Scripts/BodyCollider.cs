@@ -10,7 +10,7 @@ public class BodyCollider : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        enemyHealthScript = GameObject.Find("enemy character rig").GetComponent<EnemyHealth>();
+        enemyHealthScript = transform.parent.GetComponent<EnemyHealth>();
     }
 
     // Update is called once per frame
@@ -23,8 +23,9 @@ public class BodyCollider : MonoBehaviour
     {
         if (collision.gameObject.tag == "arrow")
         {
-            Debug.Log("Body Shot @@@@@@");
-            enemyHealthScript.takeDamage(10);
+            //Debug.Log("Body Shot @@@@@@");
+            //collision.gameObject.SendMessage("takeDamage", 10);
+            enemyHealthScript.takeDamage(20);
         }
     }
 }

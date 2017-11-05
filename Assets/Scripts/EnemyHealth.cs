@@ -5,28 +5,41 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour {
 
-	public int startingHealth = 100;
+	public int startingHealth;
 	public int currentHealth;
 	public int scoreValue = 10;
 	Transform spawnPoint;
-	bool isDead;
-	public Slider healthBar;
+	public bool isDead { get; private set;}
+	EnemyHealthBar healthBar;
+    SpawnEnemies spawnManager;
+    ScoreManager scoreManager;
 
 	// Use this for initialization
 	void Start () 
 	{
-		currentHealth = startingHealth;
+        
+        currentHealth = startingHealth;
+        healthBar = gameObject.GetComponentInChildren<EnemyHealthBar>();
+        spawnManager = GameObject.Find("EnemyManager").GetComponent<SpawnEnemies>();
+        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+        
 //		healthBar.value = calculatedHealth ();		
-	}	
+	}
+
+    void Update()
+    {
+       
+    }
 
 	public void takeDamage (int amount)
 	{
 		if (isDead)
 			return;
-
+        
 		currentHealth -= amount;
+        healthBar.SendMessage("updateHealthBar");
 //		healthBar.value = calculatedHealth ();
-		if (currentHealth <= 0) 
+        if (currentHealth <= 0) 
 		{
 			death ();
 		}
@@ -42,7 +55,8 @@ public class EnemyHealth : MonoBehaviour {
 		//Debug.Log ("Dead !!!!!!!");
 		isDead = true;        
 		Destroy (transform.parent.gameObject);
-//		Destroy (healthBar);
+        spawnManager.SendMessage("Spawn");
+        scoreManager.updateScore(scoreValue);
 	}
 
 }

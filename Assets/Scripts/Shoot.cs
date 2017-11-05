@@ -19,8 +19,7 @@ public class Shoot : MonoBehaviour {
 		timer += Time.deltaTime;
 		aimAtMousePointer();		
 		if (Input.GetButtonDown ("Fire1") && timer >= timeBetweenArrows) 
-		{
-            Debug.Log("timer :" + timer + "is Greater than or equal to " + timeBetweenArrows);
+		{           
             GameObject arrow = (GameObject)Instantiate (projectilePrefab, transform.position, this.transform.rotation);
             timer = 0f;
         }
